@@ -15,3 +15,4 @@ O app foi construído baseado em responder os seguintes questionamentos para os 
 A partir desses questionamentos, a ideia foi construir um dashboard de fácil compreensão que pudesse suprir essas dúvidas e informar o status da situação.
 
 
+Link do app https://gvbra.shinyapps.io/Projeto_perps_ciencia_dados/
