@@ -28,7 +28,7 @@ num_prof_saude <- df %>% group_by(profissionalSaude) %>%
 
 #Construindo rank de notificacoes por municipio
 rank <- df %>% group_by(municipioNotificacao) %>% 
-  tally(sort = T) %>% rename(Munic?pios = municipioNotificacao)
+  tally(sort = T) %>% rename(Municípios = municipioNotificacao)
 
 
 #Construindo s?rie visao diaria
@@ -37,7 +37,7 @@ agrup_data_dia <- df %>% group_by(dataNotificacao) %>%
 
 visao_Dia <- plot_ly(agrup_data_dia, x = ~dataNotificacao, 
                y = ~n, type = 'scatter', mode = 'lines') %>% 
-  layout(title = "N?mero de notifica??es de S?ndrome gripal por dia",
+  layout(title = "N?mero de notificações de Síndrome gripal por dia",
          xaxis = list(title = "Dia"),
          yaxis = list (title = "Frequ?ncia"))
 
@@ -47,9 +47,9 @@ agrup_data_mes <- df %>% group_by(substr(df$dataNotificacao, 1, 7)) %>%
 
 visao_Mes <- plot_ly(agrup_data_mes, x = ~anomes,
                      y = ~n, type = 'scatter', mode = 'lines') %>% 
-  layout(title = "N?mero de notifica??es de S?ndrome gripal por dia",
-         xaxis = list(title = "M?s"),
-         yaxis = list (title = "Frequ?ncia"))
+  layout(title = "Número de notificações de Síndrome gripal por dia",
+         xaxis = list(title = "Mês"),
+         yaxis = list (title = "Frequência"))
 
 #Extraindo todos os sintomas para construcaoo da nuvem de palavras
 list_sintomas <- df$sintomas %>% map(function(x) strsplit(x, split = ', '))
@@ -66,7 +66,7 @@ df_sintomas <- df_sintomas %>%
 ################################ / * SHINY */ ##################################
 ui <- dashboardPage(
   dashboardHeader(
-    title = 'Notifica??es de S?ndrome Gripal para o Estado de S?o Paulo.',
+    title = 'Notificações de Síndrome Gripal para o Estado de São Paulo.',
     titleWidth = 600
   ),
   dashboardSidebar(disable = T),
@@ -102,17 +102,17 @@ ui <- dashboardPage(
         sidebarLayout(
           sidebarPanel(width = 3,
                        textInput(inputId = 'cidade',
-                                 label = strong('Digite a cidade'), 'S?o Carlos'),
+                                 label = strong('Digite a cidade'), 'São Carlos'),
                        selectizeInput(inputId = 'var',
-                                   label = strong('Vari?vel'),
-                                   c('Idade'='1','Cor'='2', 'Gen?ro' = '3'))),
+                                   label = strong('Variável'),
+                                   c('Idade'='1','Cor'='2', 'Genêro' = '3'))),
           mainPanel(plotlyOutput('Distrib')))),
       tabPanel(
-        title = 'S?rie hist?rica',
+        title = 'Série histórica',
         sidebarLayout(
           sidebarPanel(width = 2,
                        selectInput(inputId = 'tipo',
-                                   label = strong('Vis?o'),
+                                   label = strong('Visâo'),
                                    c('Dia'='1','M?s'='2'))),
         mainPanel(class = 'cor',
                   plotlyOutput('Serie')))),
@@ -121,7 +121,7 @@ ui <- dashboardPage(
         sidebarLayout(
           sidebarPanel(width = 3,
                        sliderInput(inputId = 'freq',
-                                   label = strong('Frequ?ncia m?nima'),
+                                   label = strong('Frequência mínima'),
                                    min = 1, max = 65000, value = 10000)),
           mainPanel(wordcloud2Output('Nuvem')))),
       tabPanel(
@@ -131,7 +131,7 @@ ui <- dashboardPage(
         fluidRow(tags$p()),
         fluidRow(tags$p()),
         fluidRow(tags$p()),
-        fluidRow(tags$h4('Estes dados s?o preliminares, sujeitos a avalia??o.As bases est?o sendo avaliadas e harmonizadas, com o objetivo de ser verificada sua consist?ncia, principalmente em rela??o a atualiza??o dos dados.')),
+        fluidRow(tags$h4('Estes dados são preliminares, sujeitos a avaliação.As bases estão sendo avaliadas e harmonizadas, com o objetivo de ser verificada sua consistência, principalmente em relação a atualização dos dados.')),
         fluidRow(tags$p()),
         fluidRow(tags$p()),
         fluidRow(tags$p()),
@@ -148,11 +148,11 @@ ui <- dashboardPage(
 
 back <- function(input, output){
   output$Total <- renderValueBox(
-    valueBox(total, 'Total de notifica??es', 
+    valueBox(total, 'Total de notificações', 
              icon = icon('atom'), color = 'purple'))
   
   output$Saude <- renderValueBox(
-    valueBox(num_prof_saude, 'Notifica??es de profissionais da sa?de', 
+    valueBox(num_prof_saude, 'Notifica??es de profissionais da saúde', 
              icon = icon('list-alt'), color = 'blue'))
   
   output$Tabela <- DT::renderDataTable(
@@ -167,7 +167,7 @@ back <- function(input, output){
     if(input$var == '1'){
       
     plot_final <- plot_ly(filtro_cidade, x = ~idade, type = 'histogram') %>% 
-      layout(title = paste0('Distribui??o por idade na cidade de ', input$cidade),
+      layout(title = paste0('Distribuição por idade na cidade de ', input$cidade),
              xaxis = list(title = 'Idade'))}
     
     if(input$var == '2'){
@@ -175,9 +175,9 @@ back <- function(input, output){
     plot_final <- count(filtro_cidade, racaCor) %>% plot_ly(y = ~n,
                                                          x = ~factor(racaCor),
                                                          type = "bar") %>% 
-      layout(title = paste0('Distribui??o por cor na cidade de ', input$cidade),
+      layout(title = paste0('Distribuição por cor na cidade de ', input$cidade),
              xaxis = list(title = 'Cor'),
-             yaxis = list(title = "Frequ?ncia"))}
+             yaxis = list(title = "Frequência"))}
     
     if(input$var == '3'){
     plot_final <- count(filtro_cidade, sexo) %>% plot_ly(values = ~n,
