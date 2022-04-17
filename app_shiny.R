@@ -31,7 +31,7 @@ rank <- df %>% group_by(municipioNotificacao) %>%
   tally(sort = T) %>% rename(Municípios = municipioNotificacao)
 
 
-#Construindo s?rie visao diaria
+#Construindo serie visao diaria
 agrup_data_dia <- df %>% group_by(dataNotificacao) %>% 
   tally(sort = F)
 
@@ -51,7 +51,7 @@ visao_Mes <- plot_ly(agrup_data_mes, x = ~anomes,
          xaxis = list(title = "Mês"),
          yaxis = list (title = "Frequência"))
 
-#Extraindo todos os sintomas para construcaoo da nuvem de palavras
+#Extraindo todos os sintomas para construcao da nuvem de palavras
 list_sintomas <- df$sintomas %>% map(function(x) strsplit(x, split = ', '))
 vetor_sintomas <- c()
 
@@ -105,7 +105,7 @@ ui <- dashboardPage(
                                  label = strong('Digite a cidade'), 'São Carlos'),
                        selectizeInput(inputId = 'var',
                                    label = strong('Variável'),
-                                   c('Idade'='1','Cor'='2', 'Genêro' = '3'))),
+                                   c('Idade'='1','Cor'='2', 'Gênero' = '3'))),
           mainPanel(plotlyOutput('Distrib')))),
       tabPanel(
         title = 'Série histórica',
