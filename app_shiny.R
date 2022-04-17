@@ -13,7 +13,6 @@ library(wordcloud2)
 df <- read.csv("notifica_sindrome_gripal.csv",
                  sep = ";", encoding = 'UTF-8')
 
-View(df)
 
 
 #Calculando o total de notificacoes
@@ -64,6 +63,8 @@ df_sintomas <- df_sintomas %>%
   
 
 ################################ / * SHINY */ ##################################
+ 
+#front do app                                             
 ui <- dashboardPage(
   dashboardHeader(
     title = 'Notificações de Síndrome Gripal para o Estado de São Paulo.',
@@ -145,7 +146,7 @@ ui <- dashboardPage(
         fluidRow(tags$h6('Produzido por Giovanni Vicente Batista e Gabriela Pereira Soares')
       )))))
   
-
+#backend
 back <- function(input, output){
   output$Total <- renderValueBox(
     valueBox(total, 'Total de notificações', 
